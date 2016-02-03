@@ -25,13 +25,13 @@
     "expect": "^1.14.0",
     "lodash.fill": "^3.2.2",
     "mocha": "^2.4.5",
-    "npm-shrinkwrap": "^200.4.0",
-    "react": "^0.14.7"
+    "npm-shrinkwrap": "^200.4.0"
   },
   "dependencies": {
     "collapse-white-space": "^1.0.0",
     "is-plain-object": "^2.0.1",
     "lodash": "^3.10.1",
+    "react": "^0.14.7",
     "react-addons-test-utils": "^0.14.2",
     "sortobject": "^1.0.0",
     "stringify-object": "^2.3.1",
