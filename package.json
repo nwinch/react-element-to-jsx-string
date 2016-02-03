@@ -28,9 +28,6 @@
     "npm-shrinkwrap": "^200.4.0",
     "react": "^0.14.7"
   },
-  "peerDependencies": {
-    "react": "^0.14.7"
-  },
   "dependencies": {
     "collapse-white-space": "^1.0.0",
     "is-plain-object": "^2.0.1",
