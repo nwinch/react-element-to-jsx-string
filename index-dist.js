@@ -7,13 +7,15 @@ exports['default'] = reactElementToJSXString;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _reactAddons = require('react/addons');
+var _react = require('react');
 
-var _reactAddons2 = _interopRequireDefault(_reactAddons);
+var _react2 = _interopRequireDefault(_react);
 
 var _collapseWhiteSpace = require('collapse-white-space');
 
 var _collapseWhiteSpace2 = _interopRequireDefault(_collapseWhiteSpace);
+
+var _reactAddonsTestUtils = require('react-addons-test-utils');
 
 var _isPlainObject = require('is-plain-object');
 
@@ -35,12 +37,11 @@ var _lodashArrayFill = require('lodash/array/fill');
 
 var _lodashArrayFill2 = _interopRequireDefault(_lodashArrayFill);
 
-var isElement = _reactAddons.addons.TestUtils.isElement;
-
 function reactElementToJSXString(ReactElement) {
   var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
   var getDisplayName = options.displayName || getDefaultDisplayName;
+  var checkElement = options.isElement || _reactAddonsTestUtils.isElement;
 
   return toJSXString({ ReactElement: ReactElement });
 
@@ -54,7 +55,7 @@ function reactElementToJSXString(ReactElement) {
 
     if (typeof Element === 'string' || typeof Element === 'number') {
       return Element;
-    } else if (!isElement(Element)) {
+    } else if (!checkElement(Element)) {
       throw new Error('react-element-to-jsx-string: Expected a ReactElement, ' + 'got `' + typeof Element + '`');
     }
 
@@ -63,7 +64,7 @@ function reactElementToJSXString(ReactElement) {
     var out = '<' + tagName;
     var props = formatProps(Element.props);
     var attributes = [];
-    var children = _reactAddons2['default'].Children.toArray(Element.props.children).filter(onlyMeaningfulChildren);
+    var children = _react2['default'].Children.toArray(Element.props.children).filter(onlyMeaningfulChildren);
 
     if (Element.ref !== null) {
       attributes.push(getJSXAttribute('ref', Element.ref));
@@ -144,7 +145,7 @@ function reactElementToJSXString(ReactElement) {
   function formatValue(value) {
     if (typeof value === 'function') {
       return function noRefCheck() {};
-    } else if (isElement(value)) {
+    } else if (checkElement(value)) {
       // we use this delimiter hack in cases where the react element is a property
       // of an object from a root prop
       // i.e.
@@ -172,7 +173,7 @@ function reactElementToJSXString(ReactElement) {
   function stringifyObject(obj) {
     if (Object.keys(obj).length > 0 || obj.length > 0) {
       obj = (0, _traverse2['default'])(obj).map(function (value) {
-        if (isElement(value) || this.isLeaf) {
+        if (checkElement(value) || this.isLeaf) {
           this.update(formatValue(value));
         }
       });
