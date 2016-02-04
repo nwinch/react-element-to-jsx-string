@@ -9,13 +9,14 @@ import fill from 'lodash/array/fill';
 
 export default function reactElementToJSXString(ReactElement, options = {}) {
   let getDisplayName = options.displayName || getDefaultDisplayName;
+  let checkElement = options.isElement || isElement;
 
   return toJSXString({ReactElement});
 
   function toJSXString({ReactElement: Element = null, lvl = 0, inline = false}) {
     if (typeof Element === 'string' || typeof Element === 'number') {
       return Element;
-    } else if (!isElement(Element)) {
+    } else if (!checkElement(Element)) {
       throw new Error('react-element-to-jsx-string: Expected a ReactElement, ' +
       'got `' + (typeof Element) + '`');
     }
@@ -117,7 +118,7 @@ export default function reactElementToJSXString(ReactElement, options = {}) {
   function formatValue(value) {
     if (typeof value === 'function') {
       return function noRefCheck() {};
-    } else if (isElement(value)) {
+    } else if (checkElement(value)) {
       // we use this delimiter hack in cases where the react element is a property
       // of an object from a root prop
       // i.e.
@@ -146,7 +147,7 @@ export default function reactElementToJSXString(ReactElement, options = {}) {
   function stringifyObject(obj) {
     if (Object.keys(obj).length > 0 || obj.length > 0) {
       obj = traverse(obj).map(function(value) {
-        if (isElement(value) || this.isLeaf) {
+        if (checkElement(value) || this.isLeaf) {
           this.update(formatValue(value));
         }
       });
